@@ -1,6 +1,7 @@
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
+import Player from "../components/Player";
 import GlobalStyle from "../styles/global";
 
 const theme = {
@@ -24,10 +25,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <>
-        <Header />
-        <Component {...pageProps} />
-      </>
+      <div style={{display: 'flex'}}>
+        <main style={{flex: 1}}>
+          <Header />
+          <Component {...pageProps} />
+        </main>
+        <Player />
+      </div>
     </ThemeProvider>
   )
 }
