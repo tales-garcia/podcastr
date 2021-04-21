@@ -1,4 +1,5 @@
 import { AppProps } from "next/dist/next-server/lib/router/router";
+import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
 import Player from "../components/Player";
@@ -24,6 +25,9 @@ const theme = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
+      <Head>
+        <title>Podcastr</title>
+      </Head>
       <GlobalStyle />
       <div style={{display: 'flex'}}>
         <main style={{flex: 1}}>
