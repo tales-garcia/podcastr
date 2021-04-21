@@ -11,7 +11,7 @@ export default function Home({ episodes }: HomeProps) {
 } 
 
 export const getStaticProps: GetStaticProps = async () => {
-  const episodes = await (await fetch('http://localhost:3333/episodes')).json();
+  const episodes = await (await fetch('http://localhost:3333/episodes?_limit=10&_sort=published_at&_order=desc')).json();
 
   return {
     props: {
