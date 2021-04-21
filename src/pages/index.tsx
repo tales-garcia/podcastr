@@ -1,10 +1,14 @@
 import { GetStaticProps } from "next";
 
-export default function Home() {
-  return (
-    <h1>Index</h1>
-  )
+type HomeProps = {
+  episodes: Episode[];
 }
+
+export default function Home({ episodes }: HomeProps) {
+  return (
+    <h1>{JSON.stringify(episodes)}</h1>
+  )
+} 
 
 export const getStaticProps: GetStaticProps = async () => {
   const episodes = await (await fetch('http://localhost:3333/episodes')).json();
