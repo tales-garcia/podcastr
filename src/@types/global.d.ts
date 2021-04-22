@@ -10,4 +10,5 @@ declare interface Episode {
         type: string,
         duration: number
     }
+    stringDuration: string;
 }
