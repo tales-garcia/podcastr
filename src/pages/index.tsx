@@ -3,16 +3,44 @@ import api from "../services/api";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import convertTimeToString from "../utils/convertTimeToString";
+import Image from 'next/image';
+import { Container, LatestEpisodes } from "../styles/pages/home";
 
 type HomeProps = {
-  episodes: Episode[];
+  latestEpisodes: Episode[];
+  remainingEpisodes: Episode[];
 }
 
-export default function Home({ episodes }: HomeProps) {
+export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
   return (
-    <p>{JSON.stringify(episodes)}</p>
+    <Container>
+      <LatestEpisodes>
+        <h2>Ultimos lançamentos</h2>
+
+        <ul>
+          {latestEpisodes.map((episode) => (
+            <li key={episode.id}>
+              <Image width={192} height={192} src={episode.thumbnail} alt={episode.title} objectFit="cover" />
+              <div>
+                <a href="">{episode.title}</a>
+                <p>{episode.members}</p>
+                <span>{episode.published_at}</span>
+                <span>{episode.stringDuration}</span>
+              </div>
+              <button>
+                <img src="/play-green.svg" alt="Tocar episódio" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </LatestEpisodes>
+
+      <section>
+        <ul></ul>
+      </section>
+    </Container>
   )
-} 
+}
 
 export const getStaticProps: GetStaticProps = async () => {
   const rawEpisodes = (await api.get('episodes', {
@@ -33,9 +61,13 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   }));
 
+  const latestEpisodes = episodes.slice(0, 2);
+  const remainingEpisodes = episodes.slice(2, episodes.length);
+
   return {
     props: {
-      episodes
+      latestEpisodes,
+      remainingEpisodes
     },
     revalidate: 60 * 60 * 4
   };
