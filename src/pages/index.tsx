@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import api from "../services/api";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import convertTimeToString from "../utils/convertTimetoString";
+import convertTimeToString from "../utils/convertTimeToString";
 
 type HomeProps = {
   episodes: Episode[];
