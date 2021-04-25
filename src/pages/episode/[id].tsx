@@ -1,10 +1,12 @@
 import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next';
 import api from '../../services/api';
+import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import convertTimeToString from '../../utils/convertTimeToString';
 import Image from 'next/image';
+import { Container } from '../../styles/pages/episode';
 
 type EpisodeProps = {
     episode: Episode;
@@ -12,11 +14,13 @@ type EpisodeProps = {
 
 export default function Episode({ episode }: EpisodeProps) {
     return (
-        <div>
+        <Container>
             <div>
-                <button>
-                    <img src="/arrow-left.svg" alt="Voltar" />
-                </button>
+                <Link href="/">
+                    <button>
+                        <img src="/arrow-left.svg" alt="Voltar" />
+                    </button>
+                </Link>
                 <Image
                     width={700}
                     height={160}
@@ -34,7 +38,7 @@ export default function Episode({ episode }: EpisodeProps) {
                 <span>{episode.stringDuration}</span>
             </header>
             <div dangerouslySetInnerHTML={{ __html: episode.description }} />
-        </div>
+        </Container>
     )
 }
 
