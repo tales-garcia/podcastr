@@ -39,11 +39,13 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
         <h2>Todos os episódios</h2>
         <table cellSpacing={0}>
           <thead>
-            <th />
-            <th>Podcast</th>
-            <th>Integrantes</th>
-            <th>Data</th>
-            <th>Duração</th>
+            <tr>
+              <th />
+              <th>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th>Duração</th>
+            </tr>
           </thead>
           <tbody>
             {remainingEpisodes.map((episode) => (
