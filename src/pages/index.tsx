@@ -4,7 +4,7 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import convertTimeToString from "../utils/convertTimeToString";
 import Image from 'next/image';
-import { Container, LatestEpisodes } from "../styles/pages/home";
+import { Container, LatestEpisodes, RemainingEpisodes } from "../styles/pages/home";
 
 type HomeProps = {
   latestEpisodes: Episode[];
@@ -35,7 +35,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
         </ul>
       </LatestEpisodes>
 
-      <section>
+      <RemainingEpisodes>
         <h2>Todos os episódios</h2>
         <table cellSpacing={0}>
           <thead>
@@ -45,19 +45,20 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
               <th>Integrantes</th>
               <th>Data</th>
               <th>Duração</th>
+              <th />
             </tr>
           </thead>
           <tbody>
             {remainingEpisodes.map((episode) => (
               <tr key={episode.id}>
-                <td>
+                <td style={{ width: 72 }}>
                   <Image alt={episode.title} objectFit="cover" width={120} height={120} src={episode.thumbnail} />
                 </td>
                 <td>
                   <a href="">{episode.title}</a> 
                 </td>
                 <td>{episode.members}</td>
-                <td>{episode.published_at}</td>
+                <td style={{ width: 100 }}>{episode.published_at}</td>
                 <td>{episode.stringDuration}</td>
                 <td>
                   <button type="button">
@@ -68,7 +69,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
             ))}
           </tbody>
         </table>
-      </section>
+      </RemainingEpisodes>
     </Container>
   )
 }
