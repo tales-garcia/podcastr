@@ -12,7 +12,7 @@ export const Container = styled.main`
 `;
 
 export const LatestEpisodes = styled.section`
-    ul {
+    > ul {
         list-style: none;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -28,10 +28,14 @@ export const LatestEpisodes = styled.section`
             display: flex;
             align-items: center;
 
-            > img {
+            > div:first-child {
                 width: 6rem;
                 height: 6rem;
-                border-radius: 1rem;
+                img {
+                    width: 6rem;
+                    height: 6rem;
+                    border-radius: 1rem;
+                }
             }
 
             > button {
@@ -57,7 +61,7 @@ export const LatestEpisodes = styled.section`
                 }
             }
 
-            div {
+            > div {
                 flex: 1;
                 margin-left: 1rem;
 
