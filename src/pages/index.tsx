@@ -4,6 +4,7 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import convertTimeToString from "../utils/convertTimeToString";
 import Image from 'next/image';
+import Link from 'next/link';
 import { Container, LatestEpisodes, RemainingEpisodes } from "../styles/pages/home";
 
 type HomeProps = {
@@ -22,7 +23,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
             <li key={episode.id}>
               <Image width={192} height={192} src={episode.thumbnail} alt={episode.title} objectFit="cover" />
               <div>
-                <a href="">{episode.title}</a>
+                <Link href={`/episode/${episode.id}`}>{episode.title}</Link>
                 <p>{episode.members}</p>
                 <span>{episode.published_at}</span>
                 <span>{episode.stringDuration}</span>
@@ -55,7 +56,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
                   <Image alt={episode.title} objectFit="cover" width={120} height={120} src={episode.thumbnail} />
                 </td>
                 <td>
-                  <a href="">{episode.title}</a> 
+                  <Link href={`/episode/${episode.id}`}>{episode.title}</Link>
                 </td>
                 <td>{episode.members}</td>
                 <td style={{ width: 100 }}>{episode.published_at}</td>
