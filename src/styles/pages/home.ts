@@ -28,10 +28,13 @@ export const LatestEpisodes = styled.section`
             display: flex;
             align-items: center;
 
-            img {
+            div:first-child {
                 width: 6rem;
-                height: 6rem;
-                border-radius: 1rem;
+                img {
+                    width: 6rem;
+                    height: 6rem;
+                    border-radius: 1rem;
+                }
             }
 
             > button {
