@@ -28,14 +28,10 @@ export const LatestEpisodes = styled.section`
             display: flex;
             align-items: center;
 
-            > div:first-child {
+            img {
                 width: 6rem;
                 height: 6rem;
-                img {
-                    width: 6rem;
-                    height: 6rem;
-                    border-radius: 1rem;
-                }
+                border-radius: 1rem;
             }
 
             > button {
@@ -61,7 +57,7 @@ export const LatestEpisodes = styled.section`
                 }
             }
 
-            > div {
+            > div:not(:first-child) {
                 flex: 1;
                 margin-left: 1rem;
 
