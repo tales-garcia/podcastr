@@ -27,26 +27,48 @@ export const Container = styled.aside<ContainerProps>`
         font-weight: 600;
     }
 
-    > div {
-        width: 100%;
-        height: 20rem;
-        border-radius: 1.5rem;
-        background: 
-            linear-gradient(143.8deg, rgba(145, 100, 250, 0.8) 0%, rgba(0, 0, 0, 0) 100%),
-            url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1.5rem' ry='1.5rem' stroke='%239F75FFFF' stroke-width='1.5' stroke-dasharray='16' stroke-dashoffset='100' stroke-linecap='square'/%3e%3c/svg%3e");
- 
-        padding: 4rem;
-        text-align: center;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     footer {
         align-self: stretch;
 
         opacity: ${({ empty }) => empty ? 0.6 : 1};
+    }
+`;
+
+export const EmptyPlayer = styled.div`
+    width: 100%;
+    height: 20rem;
+    border-radius: 1.5rem;
+    background: 
+        linear-gradient(143.8deg, rgba(145, 100, 250, 0.8) 0%, rgba(0, 0, 0, 0) 100%),
+        url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='1.5rem' ry='1.5rem' stroke='%239F75FFFF' stroke-width='1.5' stroke-dasharray='16' stroke-dashoffset='100' stroke-linecap='square'/%3e%3c/svg%3e");
+
+    padding: 4rem;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const CurrentEpisodes = styled.div`
+    text-align: center;
+
+    img {
+        border-radius: 1.5rem;
+    }
+
+    strong {
+        display: block;
+        margin-top: 2rem;
+        font: 600 1.5rem Lexend, sans-serif;
+        line-height: 1.75rem;
+    }
+
+    span {
+        display: block;
+        margin-top: 1rem;
+        opacity: 0.6;
+        line-height: 1.5rem;
     }
 `;
 

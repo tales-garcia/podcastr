@@ -1,18 +1,36 @@
+import Image from 'next/image';
 import React from 'react';
+import { usePlayer } from '../../contexts/player';
 
-import { Container, Progress, Buttons, PlayButton } from './styles';
+import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes } from './styles';
 
 const Player: React.FC = () => {
+    const { episodesPlayList, selectedEpisodeIndex } = usePlayer();
+
+    const currentEpisode = episodesPlayList[selectedEpisodeIndex];
+
     return (
-        <Container empty={1}>
+        <Container empty={Number(!currentEpisode)}>
             <header>
                 <img src="/playing.svg" alt="Tocando agora" />
                 <strong>Tocando agora</strong>
             </header>
 
-            <div>
-                <strong>Selecione um podcast para ouvir</strong>
-            </div>
+            {!!currentEpisode ?
+                (
+                    <CurrentEpisodes>
+                        <Image src={currentEpisode.thumbnail} objectFit="cover" width={592} height={592} />
+                        <strong>{currentEpisode.title}</strong>
+                        <span>{currentEpisode.members}</span>
+                    </CurrentEpisodes>
+                )
+                :
+                (
+                    <EmptyPlayer>
+                        <strong>Selecione um podcast para ouvir</strong>
+                    </EmptyPlayer>
+                )
+            }
 
             <footer>
                 <Progress>
