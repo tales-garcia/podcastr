@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { usePlayer } from '../../contexts/player';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -7,9 +7,14 @@ import 'rc-slider/assets/index.css';
 import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider } from './styles';
 
 const Player: React.FC = () => {
-    const { episodesPlayList, selectedEpisodeIndex } = usePlayer();
+    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying } = usePlayer();
+    const audioRef = useRef<HTMLAudioElement>(null);
 
     const currentEpisode = episodesPlayList[selectedEpisodeIndex];
+
+    useEffect(() => {
+        if (audioRef.current) audioRef.current[isPlaying ? 'play' : 'pause']();
+    }, [isPlaying])
 
     return (
         <Container empty={Number(!currentEpisode)}>
@@ -38,14 +43,17 @@ const Player: React.FC = () => {
                 <Progress>
                     <span>00:00</span>
                     <div>{currentEpisode ? (
-                            <Slider
-                                trackStyle={{ backgroundColor: '#04d361' }}
-                                railStyle={{ backgroundColor: '#9f75ff' }}
-                                handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
-                            />
-                        ) : <EmptySlider />}</div>
+                        <Slider
+                            trackStyle={{ backgroundColor: '#04d361' }}
+                            railStyle={{ backgroundColor: '#9f75ff' }}
+                            handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
+                        />
+                    ) : <EmptySlider />}</div>
                     <span>00:00</span>
                 </Progress>
+
+                {currentEpisode && <audio ref={audioRef} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
+
                 <Buttons>
                     <button type="button" disabled={!currentEpisode}>
                         <img src="/shuffle.svg" alt="Embaralhar" />
@@ -53,8 +61,8 @@ const Player: React.FC = () => {
                     <button type="button" disabled={!currentEpisode}>
                         <img src="/play-previous.svg" alt="Tocar anterior" />
                     </button>
-                    <PlayButton type="button" disabled={!currentEpisode}>
-                        <img src="/play.svg" alt="Tocar" />
+                    <PlayButton type="button" disabled={!currentEpisode} onClick={toggleAudio}>
+                        {isPlaying ? <img src="/pause.svg" alt="Pausar" /> : <img src="/play.svg" alt="Tocar" />}
                     </PlayButton>
                     <button type="button" disabled={!currentEpisode}>
                         <img src="/play-next.svg" alt="Tocar próxima" />
