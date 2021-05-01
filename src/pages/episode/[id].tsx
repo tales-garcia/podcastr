@@ -64,8 +64,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+    const episodes = (await api.get('episodes', {
+        params: {
+            _limit: 12,
+            _sort: 'published_at',
+            _order: 'desc'
+        }
+    })).data as Episode[];
+
+    const paths = episodes.map(episode => ({
+        params: {
+            id: episode.id
+        }
+    }))
+
     return {
         fallback: 'blocking',
-        paths: []
+        paths
     }
 }
