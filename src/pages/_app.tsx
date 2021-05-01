@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
 import Player from "../components/Player";
+import { PlayerProvider } from "../contexts/player";
 import GlobalStyle from "../styles/global";
 
 const theme = {
@@ -29,13 +30,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Podcastr</title>
       </Head>
       <GlobalStyle />
-      <div style={{display: 'flex'}}>
-        <main style={{flex: 1}}>
-          <Header />
-          <Component {...pageProps} />
-        </main>
-        <Player />
-      </div>
+      <PlayerProvider>
+        <div style={{display: 'flex'}}>
+          <main style={{flex: 1}}>
+            <Header />
+            <Component {...pageProps} />
+          </main>
+          <Player />
+        </div>
+      </PlayerProvider>
     </ThemeProvider>
   )
 }
