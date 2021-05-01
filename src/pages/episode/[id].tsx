@@ -7,12 +7,15 @@ import { ptBR } from 'date-fns/locale';
 import convertTimeToString from '../../utils/convertTimeToString';
 import Image from 'next/image';
 import { Container } from '../../styles/pages/episode';
+import { usePlayer } from '../../contexts/player';
 
 type EpisodeProps = {
     episode: Episode;
 };
 
 export default function Episode({ episode }: EpisodeProps) {
+    const { play } = usePlayer();
+
     return (
         <Container>
             <div>
@@ -27,7 +30,7 @@ export default function Episode({ episode }: EpisodeProps) {
                     objectFit="cover"
                     src={episode.thumbnail}
                 />
-                <button>
+                <button onClick={() => play(episode)}>
                     <img src="/play.svg" alt="Tocar episódio" />
                 </button>
             </div>
