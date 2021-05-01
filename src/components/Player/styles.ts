@@ -86,14 +86,6 @@ export const Progress = styled.div`
 
     > div {
         flex: 1;
-
-
-        > div {
-            width: 100%;
-            height: 4px;
-            background: ${({ theme }) => theme.purple300};
-            border-radius: 2px;
-        }
     }
 `;
 
@@ -107,6 +99,15 @@ export const Buttons = styled.div`
     button {
         background: transparent;
         font-size: 0;
+        transition: filter .2s;
+
+        &:disabled {
+            cursor: default;
+        }
+
+        :hover:not(:disabled) {
+            filter: brightness(0.8);
+        }
     }
 `;
 
@@ -115,4 +116,16 @@ export const PlayButton = styled.button`
     height: 4rem;
     border-radius: 1rem;
     background: ${({ theme }) => theme.purple400} !important;
+
+
+    :hover:not(:disabled) {
+        filter: brightness(0.95) !important;
+    }
+`;
+
+export const EmptySlider = styled.div`
+    width: 100%;
+    height: 4px;
+    background: ${({ theme }) => theme.purple300};
+    border-radius: 2px;
 `;
