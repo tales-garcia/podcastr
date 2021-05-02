@@ -4,7 +4,7 @@ import { usePlayer } from '../../contexts/player';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider } from './styles';
+import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider, RepeatButton } from './styles';
 
 const Player: React.FC = () => {
     const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, shuffle, isLooping, toggleLoop } = usePlayer();
@@ -67,9 +67,9 @@ const Player: React.FC = () => {
                     <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex + 1]} onClick={playNext}>
                         <img src="/play-next.svg" alt="Tocar próxima" />
                     </button>
-                    <button type="button" disabled={!currentEpisode} onClick={toggleLoop}>
+                    <RepeatButton isActive={Number(isLooping)} type="button" disabled={!currentEpisode} onClick={toggleLoop}>
                         <img src="/repeat.svg" alt="Repetir" />
-                    </button>
+                    </RepeatButton>
                 </Buttons>
             </footer>
         </Container>
