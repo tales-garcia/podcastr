@@ -7,6 +7,7 @@ interface PlayerContextData {
     isPlaying: boolean;
     toggleAudio(): void;
     setIsPlaying: Dispatch<SetStateAction<boolean>>;
+    playList(list: Episode[], index: number): void;
 }
 
 const playerContext = createContext<PlayerContextData>({} as PlayerContextData);
@@ -34,8 +35,24 @@ export const PlayerProvider: FC = ({ children }) => {
         setIsPlaying(previousState => !previousState);
     }, []);
 
+    const playList = useCallback((list: Episode[], index: number) => {
+        setEpisodesPlayList(list);
+        setSelectedEpisodeIndex(index);
+        setIsPlaying(true);
+    }, []);
+
     return (
-        <playerContext.Provider value={{ episodesPlayList, selectedEpisodeIndex, play, isPlaying, toggleAudio, setIsPlaying }}>
+        <playerContext.Provider
+            value={{
+                episodesPlayList,
+                selectedEpisodeIndex,
+                play,
+                isPlaying,
+                toggleAudio,
+                setIsPlaying,
+                playList
+            }}
+        >
             {children}
         </playerContext.Provider>
     );
