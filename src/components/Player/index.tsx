@@ -58,13 +58,13 @@ const Player: React.FC = () => {
                     <button type="button" disabled={!currentEpisode}>
                         <img src="/shuffle.svg" alt="Embaralhar" />
                     </button>
-                    <button type="button" disabled={!currentEpisode} onClick={playPrevious}>
+                    <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex - 1]} onClick={playPrevious}>
                         <img src="/play-previous.svg" alt="Tocar anterior" />
                     </button>
                     <PlayButton type="button" disabled={!currentEpisode} onClick={toggleAudio}>
                         {isPlaying ? <img src="/pause.svg" alt="Pausar" /> : <img src="/play.svg" alt="Tocar" />}
                     </PlayButton>
-                    <button type="button" disabled={!currentEpisode} onClick={playNext}>
+                    <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex + 1]} onClick={playNext}>
                         <img src="/play-next.svg" alt="Tocar próxima" />
                     </button>
                     <button type="button" disabled={!currentEpisode}>
