@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Container, LatestEpisodes, RemainingEpisodes } from "../styles/pages/home";
 import { usePlayer } from "../contexts/player";
+import { useMemo } from "react";
 
 type HomeProps = {
   latestEpisodes: Episode[];
@@ -14,7 +15,8 @@ type HomeProps = {
 }
 
 export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
-  const { play } = usePlayer();
+  const { playList } = usePlayer();
+  const allEpisodes = useMemo(() => [...latestEpisodes, ...remainingEpisodes].reverse(), [latestEpisodes, remainingEpisodes]);
 
   return (
     <Container>
@@ -31,7 +33,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
                 <span>{episode.published_at}</span>
                 <span>{episode.stringDuration}</span>
               </div>
-              <button onClick={() => play(episode)}>
+              <button onClick={() => playList(allEpisodes, allEpisodes.findIndex(ep => ep.id === episode.id))}>
                 <img src="/play-green.svg" alt="Tocar episódio" />
               </button>
             </li>
@@ -65,7 +67,7 @@ export default function Home({ latestEpisodes, remainingEpisodes }: HomeProps) {
                 <td style={{ width: 100 }}>{episode.published_at}</td>
                 <td>{episode.stringDuration}</td>
                 <td>
-                  <button type="button" onClick={() => play(episode)}>
+                  <button type="button" onClick={() => playList(allEpisodes, allEpisodes.findIndex(ep => ep.id === episode.id))}>
                     <img src="/play-green.svg" alt="Tocar episódio"/>
                   </button>
                 </td>
