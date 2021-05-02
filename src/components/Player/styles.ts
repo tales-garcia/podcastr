@@ -131,7 +131,7 @@ export const EmptySlider = styled.div`
     border-radius: 2px;
 `;
 
-export const RepeatButton = styled.button<{ isActive: number; }>`
+export const ActivableButton = styled.button<{ isActive: number; }>`
     ${({ isActive }) => isActive && css`
         filter: invert(0.35) sepia(1) saturate(3) hue-rotate(100deg);
         :hover:not(:disabled) {

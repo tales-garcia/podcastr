@@ -10,9 +10,10 @@ interface PlayerContextData {
     playList(list: Episode[], index: number): void;
     playNext(): void;
     playPrevious(): void;
-    shuffle(): void;
     isLooping: boolean;
     toggleLoop(): void;
+    isShuffling: boolean;
+    toggleShuffling(): void;
 }
 
 function getRandomNumberBetweenExcept(min: number, max: number, exclude: number[]): number {
@@ -38,6 +39,8 @@ export const PlayerProvider: FC = ({ children }) => {
     const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useState<number>(0);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [isLooping, setIsLooping] = useState<boolean>(false);
+    const [isShuffling, setIsShuffling] = useState<boolean>(false);
+    const [usedIndexes, setUsedIndexes] = useState<number[]>([]);
 
     const play = useCallback((episode: Episode) => {
         setEpisodesPlayList([episode]);
@@ -60,28 +63,40 @@ export const PlayerProvider: FC = ({ children }) => {
     }, []);
 
     const playNext = useCallback(() => {
-        setSelectedEpisodeIndex(previousState => previousState + 1);
         setIsPlaying(true);
-    }, []);
+
+        if (isShuffling) {
+            const episodesLength = episodesPlayList.length;
+
+            if (episodesLength === usedIndexes.length) {
+                setUsedIndexes([]);
+
+                const randomIndex = getRandomNumberBetweenExcept(episodesLength, 0, []);
+
+                setSelectedEpisodeIndex(randomIndex);
+
+                return;
+            }
+
+            const randomIndex = getRandomNumberBetweenExcept(episodesLength, 0, usedIndexes);
+            setUsedIndexes([...usedIndexes, randomIndex]);
+
+            setSelectedEpisodeIndex(randomIndex);
+
+            return;
+        }
+
+        setSelectedEpisodeIndex(previousState => previousState + 1);
+    }, [usedIndexes, isShuffling, episodesPlayList]);
 
     const playPrevious = useCallback(() => {
         setSelectedEpisodeIndex(previousState => previousState - 1);
         setIsPlaying(true);
     }, []);
 
-    const shuffle = useCallback(() => {
-        const shuffledEpisodes: Episode[] = [];
-        const episodesLength = episodesPlayList.length;
-        const usedNumbers: number[] = [];
-
-        episodesPlayList.forEach(() => {
-            const randomIndex = getRandomNumberBetweenExcept(episodesLength, 0, usedNumbers);
-            usedNumbers.push(randomIndex);
-
-            shuffledEpisodes.push(episodesPlayList[randomIndex]);
-        });
-        setEpisodesPlayList(shuffledEpisodes);
-    }, [episodesPlayList]);
+    const toggleShuffling = useCallback(() => {
+        setIsShuffling(previousState => !previousState);
+    }, []);
 
     return (
         <playerContext.Provider
@@ -95,9 +110,10 @@ export const PlayerProvider: FC = ({ children }) => {
                 playList,
                 playNext,
                 playPrevious,
-                shuffle,
                 isLooping,
-                toggleLoop
+                toggleLoop,
+                isShuffling,
+                toggleShuffling
             }}
         >
             {children}

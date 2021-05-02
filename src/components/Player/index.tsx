@@ -4,10 +4,10 @@ import { usePlayer } from '../../contexts/player';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider, RepeatButton } from './styles';
+import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider, ActivableButton } from './styles';
 
 const Player: React.FC = () => {
-    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, shuffle, isLooping, toggleLoop } = usePlayer();
+    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, isLooping, toggleLoop, isShuffling, toggleShuffling } = usePlayer();
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const currentEpisode = episodesPlayList[selectedEpisodeIndex];
@@ -55,21 +55,21 @@ const Player: React.FC = () => {
                 {currentEpisode && <audio ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
 
                 <Buttons>
-                    <button type="button" disabled={!currentEpisode} onClick={shuffle}>
+                    <ActivableButton isActive={Number(isShuffling)} type="button" disabled={!currentEpisode || episodesPlayList.length <= 1} onClick={toggleShuffling}>
                         <img src="/shuffle.svg" alt="Embaralhar" />
-                    </button>
+                    </ActivableButton>
                     <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex - 1]} onClick={playPrevious}>
                         <img src="/play-previous.svg" alt="Tocar anterior" />
                     </button>
                     <PlayButton type="button" disabled={!currentEpisode} onClick={toggleAudio}>
                         {isPlaying ? <img src="/pause.svg" alt="Pausar" /> : <img src="/play.svg" alt="Tocar" />}
                     </PlayButton>
-                    <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex + 1]} onClick={playNext}>
+                    <button type="button" disabled={!(currentEpisode && (isShuffling || episodesPlayList[selectedEpisodeIndex + 1]))} onClick={playNext}>
                         <img src="/play-next.svg" alt="Tocar próxima" />
                     </button>
-                    <RepeatButton isActive={Number(isLooping)} type="button" disabled={!currentEpisode} onClick={toggleLoop}>
+                    <ActivableButton isActive={Number(isLooping)} type="button" disabled={!currentEpisode} onClick={toggleLoop}>
                         <img src="/repeat.svg" alt="Repetir" />
-                    </RepeatButton>
+                    </ActivableButton>
                 </Buttons>
             </footer>
         </Container>
