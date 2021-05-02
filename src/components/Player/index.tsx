@@ -7,7 +7,7 @@ import 'rc-slider/assets/index.css';
 import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider } from './styles';
 
 const Player: React.FC = () => {
-    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious } = usePlayer();
+    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, shuffle } = usePlayer();
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const currentEpisode = episodesPlayList[selectedEpisodeIndex];
@@ -55,7 +55,7 @@ const Player: React.FC = () => {
                 {currentEpisode && <audio ref={audioRef} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
 
                 <Buttons>
-                    <button type="button" disabled={!currentEpisode}>
+                    <button type="button" disabled={!currentEpisode} onClick={shuffle}>
                         <img src="/shuffle.svg" alt="Embaralhar" />
                     </button>
                     <button type="button" disabled={!currentEpisode || !episodesPlayList[selectedEpisodeIndex - 1]} onClick={playPrevious}>
