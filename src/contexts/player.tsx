@@ -8,6 +8,8 @@ interface PlayerContextData {
     toggleAudio(): void;
     setIsPlaying: Dispatch<SetStateAction<boolean>>;
     playList(list: Episode[], index: number): void;
+    playNext(): void;
+    playPrevious(): void;
 }
 
 const playerContext = createContext<PlayerContextData>({} as PlayerContextData);
@@ -41,6 +43,16 @@ export const PlayerProvider: FC = ({ children }) => {
         setIsPlaying(true);
     }, []);
 
+    const playNext = useCallback(() => {
+        setSelectedEpisodeIndex(previousState => previousState + 1);
+        setIsPlaying(true);
+    }, []);
+
+    const playPrevious = useCallback(() => {
+        setSelectedEpisodeIndex(previousState => previousState - 1);
+        setIsPlaying(true);
+    }, []);
+
     return (
         <playerContext.Provider
             value={{
@@ -50,7 +62,9 @@ export const PlayerProvider: FC = ({ children }) => {
                 isPlaying,
                 toggleAudio,
                 setIsPlaying,
-                playList
+                playList,
+                playNext,
+                playPrevious
             }}
         >
             {children}
