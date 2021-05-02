@@ -10,6 +10,15 @@ interface PlayerContextData {
     playList(list: Episode[], index: number): void;
     playNext(): void;
     playPrevious(): void;
+    shuffle(): void;
+}
+
+function getRandomNumberBetweenExcept(min: number, max: number, exclude: number[]): number {
+    const random = Math.floor(Math.random() * (max - min)) + min;
+
+    if (exclude.includes(random)) return getRandomNumberBetweenExcept(min, max, exclude);
+
+    return random;
 }
 
 const playerContext = createContext<PlayerContextData>({} as PlayerContextData);
@@ -53,6 +62,20 @@ export const PlayerProvider: FC = ({ children }) => {
         setIsPlaying(true);
     }, []);
 
+    const shuffle = useCallback(() => {
+        const shuffledEpisodes: Episode[] = [];
+        const episodesLength = episodesPlayList.length;
+        const usedNumbers: number[] = [];
+
+        episodesPlayList.forEach(() => {
+            const randomIndex = getRandomNumberBetweenExcept(episodesLength, 0, usedNumbers);
+            usedNumbers.push(randomIndex);
+
+            shuffledEpisodes.push(episodesPlayList[randomIndex]);
+        });
+        setEpisodesPlayList(shuffledEpisodes);
+    }, [episodesPlayList]);
+
     return (
         <playerContext.Provider
             value={{
@@ -64,7 +87,8 @@ export const PlayerProvider: FC = ({ children }) => {
                 setIsPlaying,
                 playList,
                 playNext,
-                playPrevious
+                playPrevious,
+                shuffle
             }}
         >
             {children}
