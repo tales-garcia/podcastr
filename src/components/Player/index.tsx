@@ -53,6 +53,8 @@ const Player: React.FC = () => {
                         <Slider
                             trackStyle={{ backgroundColor: '#04d361' }}
                             railStyle={{ backgroundColor: '#9f75ff' }}
+                            max={audioRef.current?.duration}
+                            value={currentTime}
                             handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
                         />
                     ) : <EmptySlider />}</div>
