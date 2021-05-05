@@ -14,6 +14,8 @@ interface PlayerContextData {
     toggleLoop(): void;
     isShuffling: boolean;
     toggleShuffling(): void;
+    currentTime: number;
+    setCurrentTime: Dispatch<SetStateAction<number>>;
 }
 
 function getRandomNumberBetweenExcept(min: number, max: number, exclude: number[]): number {
@@ -41,6 +43,7 @@ export const PlayerProvider: FC = ({ children }) => {
     const [isLooping, setIsLooping] = useState<boolean>(false);
     const [isShuffling, setIsShuffling] = useState<boolean>(false);
     const [usedIndexes, setUsedIndexes] = useState<number[]>([]);
+    const [currentTime, setCurrentTime] = useState<number>(0);
 
     const play = useCallback((episode: Episode) => {
         setEpisodesPlayList([episode]);
@@ -113,7 +116,9 @@ export const PlayerProvider: FC = ({ children }) => {
                 isLooping,
                 toggleLoop,
                 isShuffling,
-                toggleShuffling
+                toggleShuffling,
+                currentTime,
+                setCurrentTime
             }}
         >
             {children}

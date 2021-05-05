@@ -1,13 +1,14 @@
 import Image from 'next/image';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { usePlayer } from '../../contexts/player';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes, EmptySlider, ActivableButton } from './styles';
+import convertTimeToString from '../../utils/convertTimeToString';
 
 const Player: React.FC = () => {
-    const { episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, isLooping, toggleLoop, isShuffling, toggleShuffling } = usePlayer();
+    const { setCurrentTime, currentTime, episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, isLooping, toggleLoop, isShuffling, toggleShuffling } = usePlayer();
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const currentEpisode = episodesPlayList[selectedEpisodeIndex];
@@ -15,6 +16,12 @@ const Player: React.FC = () => {
     useEffect(() => {
         if (audioRef.current) audioRef.current[isPlaying ? 'play' : 'pause']();
     }, [isPlaying])
+
+    const setProgressListener = useCallback(() => {
+        audioRef.current?.addEventListener('timeupdate', () => {
+            setCurrentTime(Math.floor(audioRef.current?.currentTime || 0))
+        });
+    }, []);
 
     return (
         <Container empty={Number(!currentEpisode)}>
@@ -41,7 +48,7 @@ const Player: React.FC = () => {
 
             <footer>
                 <Progress>
-                    <span>00:00</span>
+                    <span>{convertTimeToString(currentTime)}</span>
                     <div>{currentEpisode ? (
                         <Slider
                             trackStyle={{ backgroundColor: '#04d361' }}
@@ -52,7 +59,7 @@ const Player: React.FC = () => {
                     <span>{currentEpisode ? currentEpisode.stringDuration : '00:00'}</span>
                 </Progress>
 
-                {currentEpisode && <audio ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
+                {currentEpisode && <audio onLoadedMetadata={setProgressListener} ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
 
                 <Buttons>
                     <ActivableButton isActive={Number(isShuffling)} type="button" disabled={!currentEpisode || episodesPlayList.length <= 1} onClick={toggleShuffling}>
