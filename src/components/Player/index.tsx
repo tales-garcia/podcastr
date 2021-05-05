@@ -49,7 +49,7 @@ const Player: React.FC = () => {
                             handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
                         />
                     ) : <EmptySlider />}</div>
-                    <span>00:00</span>
+                    <span>{currentEpisode ? currentEpisode.stringDuration : '00:00'}</span>
                 </Progress>
 
                 {currentEpisode && <audio ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
