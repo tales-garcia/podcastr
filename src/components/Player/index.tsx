@@ -23,6 +23,14 @@ const Player: React.FC = () => {
         });
     }, []);
 
+    const handleSeek = useCallback((amount: number) => {
+        if(!audioRef.current) return;
+
+        audioRef.current.currentTime = amount;
+    
+        setCurrentTime(Math.floor(amount));
+      }, []);
+
     return (
         <Container empty={Number(!currentEpisode)}>
             <header>
@@ -55,6 +63,7 @@ const Player: React.FC = () => {
                             railStyle={{ backgroundColor: '#9f75ff' }}
                             max={audioRef.current?.duration}
                             value={currentTime}
+                            onChange={handleSeek}
                             handleStyle={{ borderColor: '#04d361', borderWidth: 4 }}
                         />
                     ) : <EmptySlider />}</div>
