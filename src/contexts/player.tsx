@@ -16,6 +16,7 @@ interface PlayerContextData {
     toggleShuffling(): void;
     currentTime: number;
     setCurrentTime: Dispatch<SetStateAction<number>>;
+    clearPlayerState(): void;
 }
 
 function getRandomNumberBetweenExcept(min: number, max: number, exclude: number[]): number {
@@ -101,10 +102,19 @@ export const PlayerProvider: FC = ({ children }) => {
         setIsShuffling(previousState => !previousState);
     }, []);
 
+    const clearPlayerState = useCallback(() => {
+        setEpisodesPlayList([]);
+        setSelectedEpisodeIndex(0);
+        setIsPlaying(false);
+        setUsedIndexes([]);
+        setCurrentTime(0);
+    }, []);
+
     return (
         <playerContext.Provider
             value={{
                 episodesPlayList,
+                clearPlayerState,
                 selectedEpisodeIndex,
                 play,
                 isPlaying,
