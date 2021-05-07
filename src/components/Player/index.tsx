@@ -24,12 +24,12 @@ const Player: React.FC = () => {
     }, []);
 
     const handleSeek = useCallback((amount: number) => {
-        if(!audioRef.current) return;
+        if (!audioRef.current) return;
 
         audioRef.current.currentTime = amount;
-    
+
         setCurrentTime(Math.floor(amount));
-      }, []);
+    }, []);
 
     return (
         <Container empty={Number(!currentEpisode)}>
