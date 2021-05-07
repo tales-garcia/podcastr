@@ -8,7 +8,7 @@ import { Container, Progress, Buttons, PlayButton, EmptyPlayer, CurrentEpisodes,
 import convertTimeToString from '../../utils/convertTimeToString';
 
 const Player: React.FC = () => {
-    const { setCurrentTime, currentTime, episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, isLooping, toggleLoop, isShuffling, toggleShuffling } = usePlayer();
+    const { setCurrentTime, currentTime, clearPlayerState, episodesPlayList, selectedEpisodeIndex, isPlaying, toggleAudio, setIsPlaying, playNext, playPrevious, isLooping, toggleLoop, isShuffling, toggleShuffling } = usePlayer();
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const currentEpisode = episodesPlayList[selectedEpisodeIndex];
@@ -30,6 +30,11 @@ const Player: React.FC = () => {
 
         setCurrentTime(Math.floor(amount));
     }, []);
+
+    const handleEnded = useCallback(() => {
+        if (isShuffling || episodesPlayList[selectedEpisodeIndex + 1]) playNext();
+        else clearPlayerState();
+    }, [isShuffling, selectedEpisodeIndex, playNext, clearPlayerState, episodesPlayList]);
 
     return (
         <Container empty={Number(!currentEpisode)}>
@@ -70,7 +75,7 @@ const Player: React.FC = () => {
                     <span>{currentEpisode ? currentEpisode.stringDuration : '00:00'}</span>
                 </Progress>
 
-                {currentEpisode && <audio onLoadedMetadata={setProgressListener} ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
+                {currentEpisode && <audio onEnded={handleEnded} onLoadedMetadata={setProgressListener} ref={audioRef} loop={isLooping} onPause={() => setIsPlaying(false)} onPlay={() => setIsPlaying(true)} src={currentEpisode.file.url} autoPlay />}
 
                 <Buttons>
                     <ActivableButton isActive={Number(isShuffling)} type="button" disabled={!currentEpisode || episodesPlayList.length <= 1} onClick={toggleShuffling}>
